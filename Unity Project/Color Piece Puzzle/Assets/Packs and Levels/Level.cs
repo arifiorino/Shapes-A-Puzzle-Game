@@ -1,17 +1,33 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using SimpleJSON;
 
 public class Level{
-	public bool solved = false, unlocked=false;
-	public int difficulty=0;
+	public int packIndex;
+	public bool solved;
+	public int index;
 	public GameObject button;
-//	public PieceClasses.GameBoard gameBoard;
-	public PieceClasses.Piece backgroundPiece;
+	public PieceClasses.Piece previewPiece;
+	public JSONNode gameDict;
+	public int[] solution; //array of colors of solution
 
-	public Level(bool unlocked, bool solved, int difficulty){
-		this.unlocked = unlocked;
+	public Level(int packIndex, int index, bool solved){
+		this.packIndex = packIndex;
+		this.index = index;
 		this.solved = solved;
-		this.difficulty = difficulty;
+
+		TextAsset reader = (TextAsset)Resources.Load ("Pack"+(this.packIndex+1)+"Level"+(this.index+1));
+		this.gameDict = JSON.Parse (reader.text);
+
+		if (this.solved) {
+			string solutionString = PlayerPrefs.GetString ("pack"+(this.packIndex+1)+"Level"+(this.index+1)+"Solution");
+			Debug.Log ("Solution: "+solutionString);
+			JSONArray solutionArray = JSON.Parse (solutionString).AsArray;
+			this.solution = new int[solutionArray.Count];
+			for (int i=0;i<solutionArray.Count;i++) {
+				this.solution [i] = solutionArray [i].AsInt;
+			}
+		}
 	}
 }

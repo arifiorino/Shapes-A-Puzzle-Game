@@ -26,8 +26,8 @@ public class MainGame : MonoBehaviour{
 		mainScheduler = new Scheduler ();
 		cameraHeight = 2f * Camera.main.orthographicSize;
 		cameraWidth = cameraHeight * Camera.main.aspect;
-		levelTitle.text = PackPresets.currentPack.currentLevel+1+"";
-		mainBoard=importPiecesFromFile ("Pack"+(PackPresets.currentPack.packI+1)+"Level"+(PackPresets.currentPack.currentLevel+1));
+		levelTitle.text = PackPresets.currentPack.currentLevel.index+1+"";
+		mainBoard=importPiecesFromGameDict (PackPresets.currentPack.currentLevel.gameDict);
 		mainLevelLoop();
 	}
 	
@@ -40,9 +40,11 @@ public class MainGame : MonoBehaviour{
 
 		mainScheduler.addUpdateFunction (updateGame);
 		mainScheduler.addTime (.5f);
-		mainScheduler.addInitFunctionWithTime (showRandomCompliment, .5f);
+//		mainScheduler.addInitFunctionWithTime (showRandomCompliment, .5f);
 
 		mainScheduler.addInitFunction (delegate() {
+			this.heldPieceIndex=-1;
+			this.saveLevelSolution();
 			PackPresets.currentPack.solveLevel();
 			animating = false;
 		});
@@ -52,7 +54,7 @@ public class MainGame : MonoBehaviour{
 
 		mainScheduler.addInitFunction (delegate() {
 			complimentScreen.SetActive(false);
-			levelTitle.text = PackPresets.currentPack.currentLevel+1+"";
+			levelTitle.text = PackPresets.currentPack.currentLevel.index+1+"";
 			Destroy(oldBoard.gameObject);
 			mainBoard.backgroundPiece.gameObject.SetActive(true);
 		});
@@ -72,9 +74,10 @@ public class MainGame : MonoBehaviour{
 	}
 
 	void setupTransition(){
-		float ANIMATION_TIME = .8f;
+		float ANIMATION_TIME = 1f;
 		oldBoard = mainBoard;
-		mainBoard=importPiecesFromFile ("Pack"+(PackPresets.currentPack.packI+1)+"Level"+(PackPresets.currentPack.currentLevel+1));
+
+		mainBoard=importPiecesFromGameDict (PackPresets.currentPack.currentLevel.gameDict);
 		Vector2[] transitionEndPositions = new Vector2[mainBoard.pieces.Length];
 		for (int i=0; i<mainBoard.pieces.Length; i++) {
 			transitionEndPositions [i] = mainBoard.pieces [i].gameObject.transform.localPosition;
@@ -125,17 +128,43 @@ public class MainGame : MonoBehaviour{
 
 		//Debug.Break ();
 	}
+
+	void saveLevelSolution(){
+		JSONArray solution = new JSONArray();
+		PackPresets.currentPack.currentLevel.solution = new int[mainBoard.numSquaresOn];
+
+		int solutionI = 0;
+		for (int y = 0; y < mainBoard.backgroundPiece.height; y++) {
+			for (int x = 0; x < mainBoard.backgroundPiece.width; x++) {
+				if (mainBoard.backgroundPiece.squaresOn [x, y]) {
+					
+					Color squareColor = mainBoard.squares [(int)mainBoard.backgroundPiece.position.x + x, (int)mainBoard.backgroundPiece.position.y + y].color;
+					bool changed = false;
+					for (int colorI=0;colorI<PackPresets.colorScheme.Length;colorI++) {
+						if (PackPresets.colorScheme[colorI].Equals (squareColor)) {
+							changed = true;
+							solution.Add(new JSONData (colorI));
+							PackPresets.currentPack.currentLevel.solution [solutionI] = colorI;
+						}
+					}
+					if (!changed) {
+						Debug.Log ("Color not found!!!");
+					}
+					solutionI++;
+				}
+			}
+		}
+		Debug.Log ("Level solution: " + solution.ToString ());
+		PlayerPrefs.SetString ("pack"+(PackPresets.currentPack.index+1)+"Level"+(PackPresets.currentPack.currentLevel.index+1)+"Solution", solution.ToString ());
+		PlayerPrefs.Save ();
+	}
 	
-	PieceClasses.GameBoard importPiecesFromFile(string filename){
-		Debug.Log ("Loading:"+filename);
-		TextAsset reader = (TextAsset)Resources.Load (filename);
-		string jsonString = reader.text;
-		
-		JSONNode gameDict = JSON.Parse (jsonString);
+	PieceClasses.GameBoard importPiecesFromGameDict(JSONNode gameDict){
 		PieceClasses.GameBoard board = new PieceClasses.GameBoard(new Vector2(gameDict["boardSize"][0].AsFloat, gameDict["boardSize"][1].AsFloat));//new board
 
 		JSONArray piecesArray = gameDict["pieces"].AsArray; //Create pieces
 		board.pieces=new PieceClasses.Piece[piecesArray.Count];
+
 		for (int i=0;i<piecesArray.Count;i++){
 			board.pieces[i]=importPiece(piecesArray[i]);
 		}
@@ -155,16 +184,23 @@ public class MainGame : MonoBehaviour{
 		}
 		createPieceGameObjects (board.backgroundPiece, board, 1.2f, 1.2f, false, "Background Piece");//create background piece
 		board.backgroundPiece.setSortingLayer("Background Piece");
+		Debug.Log ("Set sorting layer for background piece");
 		topHeight=(50f/(float)Camera.main.pixelHeight)*cameraHeight;
+		Debug.Log ("Top height: "+topHeight);
+		Debug.Log ("Camera width: "+cameraWidth);
+		Debug.Log ("Camera height: "+cameraHeight);
 		Rect viewRect = new Rect (0, -topHeight/2f, cameraWidth, cameraHeight-topHeight);
 		float boardRatio = board.size.x / board.size.y;
 		if (boardRatio < viewRect.width / viewRect.height) {
+			Debug.Log ("Scaling by height");
 			board.gameObject.transform.localScale= new Vector3 (viewRect.height*boardRatio/board.size.x, viewRect.height/board.size.y, 1f); //scale to height
 			board.gameObject.transform.position = new Vector2 (-viewRect.height*boardRatio/2+viewRect.x, viewRect.height/2+viewRect.y);
 		} else {
+			Debug.Log ("Scaling by width");
 			board.gameObject.transform.localScale= new Vector3 (viewRect.width/board.size.x, viewRect.width/boardRatio/board.size.y, 1f); //scale to width
 			board.gameObject.transform.position = new Vector2 (-viewRect.width/2+viewRect.x, viewRect.width/boardRatio/2+viewRect.y);
 		}
+		Debug.Log ("Scale: "+board.gameObject.transform.localScale);
 	}
 	
 	PieceClasses.Piece importPiece(JSONNode pieceDict){ //make piece object from jsondict of a piece
@@ -197,7 +233,9 @@ public class MainGame : MonoBehaviour{
 		piece.gameObject.transform.position = VectorMethods.multiplyVectors (piece.position, new Vector2 (1f, -1f));
 		board1.movePiece (piece, piece.position, true, checkIntersection);//move piece to its position
 		piece.gameObject.transform.localScale=new Vector3(1f,1f,1f);
+		piece.setSortingLayer("Pieces");
 	}
+
 	void updateAllGameObjects(PieceClasses.GameBoard board1){
 		foreach (PieceClasses.Piece piece in board1.pieces) {
 			for (int y=0; y<piece.height; y++)
@@ -229,27 +267,6 @@ public class MainGame : MonoBehaviour{
 		Vector2 BGPos=VectorMethods.addVectors(mainBoard.backgroundPiece.gameObject.transform.localPosition, new Vector2(mainBoard.backgroundPiece.width/2f, -mainBoard.backgroundPiece.height/2f));
 		complimentScreen.gameObject.transform.position=Camera.main.WorldToScreenPoint(mainBoard.gameObject.transform.TransformPoint(BGPos));
 		complimentScreen.SetActive(true);
-	}
-	
-	string getTime(){
-		float timePassed = Time.time;// - startTime;
-		int hours=Mathf.FloorToInt(timePassed/60f/60f);
-		timePassed -= hours *60f*60f;
-		int mins = Mathf.FloorToInt(timePassed/60f);
-		timePassed -= mins *60f;
-		int secs = Mathf.FloorToInt(timePassed);
-		timePassed -= secs;
-		int centiSecs=Mathf.FloorToInt(timePassed*100f);
-		string text;
-		if (hours>0)
-			text = string.Format("{0:00}:{1:00}:{2:00}.{3:00}", hours, mins, secs, centiSecs);
-		else if (mins>0)
-			text = string.Format("{0:00}:{1:00}.{2:00}", mins, secs, centiSecs);
-		else if (secs>0)
-			text = string.Format("{0:00}.{1:00}", secs, centiSecs);
-		else
-			text = string.Format(".{0:00}", centiSecs);
-		return text;
 	}
 
 	bool updateGame(){

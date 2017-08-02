@@ -30,6 +30,9 @@ public class LoadPackSelect : MonoBehaviour {
 			pack.button.GetComponent<Button>().onClick.AddListener(delegate() {
 				PackPresets.currentPack=PackPresets.packs[tempPackI];
 				SceneManager.LoadScene("Level Select/LevelSelect");
+
+				PlayerPrefs.SetInt ("currentPack", tempPackI);
+				PlayerPrefs.Save();
 			});
 
 

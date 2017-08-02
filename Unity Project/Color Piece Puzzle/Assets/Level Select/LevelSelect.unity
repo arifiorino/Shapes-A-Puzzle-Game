@@ -157,7 +157,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.9019608, g: 0.9019608, b: 0.9019608, a: 1}
+  m_Color: {r: 0.8627451, g: 0.8627451, b: 0.8627451, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -526,7 +526,7 @@ Canvas:
   m_RenderMode: 1
   m_Camera: {fileID: 1486883843}
   m_PlaneDistance: 100
-  m_PixelPerfect: 1
+  m_PixelPerfect: 0
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
@@ -639,7 +639,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   packTitle: {fileID: 1759008305}
   content: {fileID: 457781494}
-  levelButtonPrefab: {fileID: 141652, guid: 3188864d02cc1478681695f134eb106d, type: 2}
+  levelButtonPrefab: {fileID: 1899362802576308, guid: 80c16064c8b524053a7b69d13b9b6bbe,
+    type: 2}
   prefabs:
   - {fileID: 124308, guid: 16643e81c8a164de6afe51c43c1349d5, type: 2}
   - {fileID: 171642, guid: 594e4b67c05614fad87292fdc2691471, type: 2}

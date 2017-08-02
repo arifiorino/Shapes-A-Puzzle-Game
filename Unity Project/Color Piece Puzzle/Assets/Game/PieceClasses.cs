@@ -142,6 +142,13 @@ public class PieceClasses : MonoBehaviour{
 						numSquaresOn++;
 		}
 
+		public Square firstSquare(){
+			for (int y = 0; y < height; y++)
+				for (int x = 0; x < width; x++)
+					if (squaresOn [x, y])
+						return squares [x, y];
+			return null;
+		}
 
 		public void makeCurves(){
 			for (int y=0; y<height; y++)

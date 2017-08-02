@@ -278,7 +278,7 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
-    m_Font: {fileID: 12800000, guid: 4cf9d691c6ba24325a3035fa7db765b1, type: 3}
+    m_Font: {fileID: 12800000, guid: 3e267566339c44b358243f3e3e349ad3, type: 3}
     m_FontSize: 30
     m_FontStyle: 0
     m_BestFit: 0
@@ -690,7 +690,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.9019608, g: 0.9019608, b: 0.9019608, a: 1}
+  m_Color: {r: 0.8627451, g: 0.8627451, b: 0.8627451, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -744,7 +744,6 @@ GameObject:
   - component: {fileID: 2114044632}
   - component: {fileID: 2114044637}
   - component: {fileID: 2114044638}
-  - component: {fileID: 2114044639}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -844,16 +843,5 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f8690d67a98464919b724ffe182ff6c2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &2114044639
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 2114044631}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8141dc3ec81e64de2bc317a2585e8408, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

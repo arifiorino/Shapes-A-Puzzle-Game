@@ -17,6 +17,9 @@ public class LoadLevelSelect : MonoBehaviour {
 	int borderBetweenLevels = 5;
 
 	void Start () {
+
+		Debug.Log ("Loading level select");
+
 		packTitle.text = PackPresets.currentPack.name;
 
 		float width = (content.GetComponent<RectTransform> ().rect.width-borderToScreen*2+borderBetweenLevels)/numColumns-borderBetweenLevels;
@@ -29,30 +32,35 @@ public class LoadLevelSelect : MonoBehaviour {
 		int levelRow = 0;
 		int levelI = 0;
 		foreach (Level level in PackPresets.currentPack.levels) {
+			
 			level.button=(GameObject)Instantiate(levelButtonPrefab, new Vector3(x,y,0), Quaternion.identity);
 			level.button.transform.SetParent(content.transform, false);
 			level.button.GetComponent<RectTransform>().anchoredPosition=new Vector2(x,y);
 			level.button.GetComponent<RectTransform>().sizeDelta=new Vector2(width, height);
-			level.button.GetComponentInChildren<Text>().text=""+level.difficulty;
+			level.button.GetComponentInChildren<Text>().text=""+(level.index+1);
 
-//			level.gameBoard = importGameBoardFromFile ("Pack"+(PackPresets.currentPack.packI+1)+"Level"+(levelI+1), level.button.GetComponent<RectTransform>().rect);
-//			level.gameBoard.gameObject.transform.parent = level.button.transform;
-//			level.gameBoard.gameObject.SetActive (false);
+			level.previewPiece=importPiece(level.gameDict["backgroundPiece"]);
+			createPreviewPieceGameObjects (level.previewPiece, level.button.transform.GetChild(1).gameObject);
 
-			TextAsset reader = (TextAsset)Resources.Load ("Pack"+(PackPresets.currentPack.packI+1)+"Level"+(levelI+1));
-			string jsonString = reader.text;
-			JSONNode gameDict = JSON.Parse (jsonString);
-			level.backgroundPiece=importPiece(gameDict["backgroundPiece"]);
-			createPieceGameObjects (level.backgroundPiece, new Vector2 (0, 0));
-			level.backgroundPiece.gameObject.transform.parent = level.button.transform;
+			Vector2 pieceRectSize = level.previewPiece.gameObject.GetComponent<RectTransform> ().rect.size;
+			Vector2 squareSize = boundsScreenSize (level.previewPiece.firstSquare().gameObject.GetComponent<Renderer> ().bounds, Camera.main);
 
-			if (!level.solved)
-				level.button.GetComponentInChildren<Text>().fontStyle=FontStyle.Italic;
-			//level.button.GetComponent<Button>().interactable=level.unlocked;
+			float scaleByWidth = pieceRectSize.x / (level.previewPiece.width * squareSize.x)*.8f; //The should take up 70% of piece
+			float scaleByHeight = pieceRectSize.y / (level.previewPiece.height * squareSize.y)*.8f;
+			level.previewPiece.gameObject.transform.localScale = new Vector2 (Mathf.Min(scaleByWidth,scaleByHeight), Mathf.Min(scaleByWidth,scaleByHeight));
+
+			if (level.solved) {
+				this.colorPreviewPiece (level.previewPiece, level.solution);
+			}
+
+
 			int tempLevelI=levelI;
 			level.button.GetComponent<Button>().onClick.AddListener(delegate() {
-				PackPresets.currentPack.currentLevel=tempLevelI;
+				PackPresets.currentPack.currentLevel=PackPresets.currentPack.levels[tempLevelI];
 				SceneManager.LoadScene("Game/Game");
+
+				PlayerPrefs.SetInt ("pack" + PackPresets.currentPack.index + "CurrentLevel", tempLevelI);
+				PlayerPrefs.Save ();
 			});
 
 			if (levelI<PackPresets.currentPack.levels.Length-1){ //not last level because that would be useless
@@ -78,49 +86,6 @@ public class LoadLevelSelect : MonoBehaviour {
 		content.GetComponent<RectTransform> ().sizeDelta=new Vector2(pageX+(width*numRows)+(borderBetweenLevels*(numRows-1))+borderToScreen,0);
 	}
 
-	PieceClasses.GameBoard importGameBoardFromFile(string filename, Rect buttonRect){
-		Debug.Log ("Loading:"+filename);
-		TextAsset reader = (TextAsset)Resources.Load (filename);
-		string jsonString = reader.text;
-
-		JSONNode gameDict = JSON.Parse (jsonString);
-		PieceClasses.GameBoard board = new PieceClasses.GameBoard(new Vector2(gameDict["boardSize"][0].AsFloat, gameDict["boardSize"][1].AsFloat));//new board
-
-		JSONArray piecesArray = gameDict["pieces"].AsArray; //Create pieces
-		board.pieces=new PieceClasses.Piece[piecesArray.Count];
-		for (int i=0;i<piecesArray.Count;i++){
-			board.pieces[i]=importPiece(piecesArray[i]);
-		}
-
-		board.backgroundPiece=importPiece(gameDict["backgroundPiece"]);//Create Background piece
-		board.backgroundPiece.position = new Vector2 ((int)(board.size.x/2-board.backgroundPiece.width / 2), (int)(board.size.y/2-board.backgroundPiece.height/2));
-
-		createBoardGameObjects (board, buttonRect);
-
-		return board;
-	}
-
-	void createBoardGameObjects(PieceClasses.GameBoard board, Rect viewRect){
-		viewRect.position = new Vector2 (0f, 0f);
-		board.gameObject = new GameObject ("Board");//create board
-		foreach (PieceClasses.Piece piece in board.pieces) {//create pieces
-			createPieceGameObjects (piece, board);
-		}
-		createPieceGameObjects (board.backgroundPiece, board, 1.2f, 1.2f, false, "Background Piece");//create background piece
-//		board.backgroundPiece.setSortingLayer("Background Piece");
-//		topHeight=(50f/(float)Camera.main.pixelHeight)*cameraHeight;
-//		Rect viewRect = new Rect (0, -topHeight/2f, cameraWidth, cameraHeight-topHeight);
-		float boardRatio = board.size.x / board.size.y;
-		Debug.Log(viewRect.height+", "+boardRatio+", "+board.size.x);
-		if (boardRatio < viewRect.width / viewRect.height) {
-			board.gameObject.transform.localScale= new Vector3 (viewRect.height*boardRatio/board.size.x, viewRect.height/board.size.y, 1f); //scale to height
-			board.gameObject.transform.localPosition = new Vector2 (-viewRect.height*boardRatio/2+viewRect.x, viewRect.height/2+viewRect.y);
-		} else {
-			board.gameObject.transform.localScale= new Vector3 (viewRect.width/board.size.x, viewRect.width/boardRatio/board.size.y, 1f); //scale to width
-			board.gameObject.transform.localPosition = new Vector2 (-viewRect.width/2+viewRect.x, viewRect.width/boardRatio/2+viewRect.y);
-		}
-	}
-
 	PieceClasses.Piece importPiece(JSONNode pieceDict){ //make piece object from jsondict of a piece
 		bool[,] squaresOn=new bool[pieceDict["size"][0].AsInt,pieceDict["size"][1].AsInt];
 		int i=0;
@@ -133,42 +98,42 @@ public class LoadLevelSelect : MonoBehaviour {
 		return new PieceClasses.Piece (squaresOn, color, new Vector2(pieceDict["startPos"][0].AsFloat, pieceDict["startPos"][1].AsFloat));
 	}
 
-	void createPieceGameObjects(PieceClasses.Piece piece, PieceClasses.GameBoard board1, float scaleX=1, float scaleY=1, bool checkIntersection=true, string gameObjectName="Piece"){//put board,piece,and square gameobjects on screen
-		piece.gameObject = new GameObject (gameObjectName);
-		piece.gameObject.transform.parent = board1.gameObject.transform;
-		int width = piece.squares.GetLength (0), height = piece.squares.GetLength (1);
-		for (int y=0; y<height; y++)
-			for (int x=0; x<width; x++)
+	void createPreviewPieceGameObjects(PieceClasses.Piece piece, GameObject gameObject){
+		piece.gameObject = gameObject;
+		for (int y=0; y<piece.height; y++)
+			for (int x=0; x<piece.width; x++)
 				if (piece.squaresOn [x,y]){
 					GameObject prefab=prefabs[piece.squares[x,y].prefabNum];
-					Vector3 position=new Vector3(x+.5f,-y-.5f,0);//-(width/2f)+x+.5f, (height/2f)-y-.5f for centered
+					Vector3 squarePosition=new Vector3(-(piece.width/2f)+x+.5f, (piece.height/2f)-y-.5f);
 					Quaternion rotation=Quaternion.Euler(0,0,piece.squares[x,y].rotation);
-					piece.squares[x,y].gameObject=(GameObject)Instantiate(prefab, position,rotation);
+					piece.squares[x,y].gameObject=(GameObject)Instantiate(prefab);
 					piece.squares[x,y].gameObject.transform.parent=piece.gameObject.transform;
+					piece.squares [x, y].gameObject.transform.localPosition = squarePosition;
+					piece.squares [x, y].gameObject.transform.localRotation = rotation;
 					piece.squares[x,y].gameObject.GetComponent<SpriteRenderer>().color=piece.color;
-					piece.squares[x,y].gameObject.GetComponent<Transform>().localScale=new Vector3(scaleX, scaleY, 1f);
+					piece.squares[x,y].gameObject.GetComponent<Transform>().localScale=new Vector3(1f, 1f, 1f);
 				}
-		piece.gameObject.transform.position = VectorMethods.multiplyVectors (piece.position, new Vector2 (1f, -1f));
-		board1.movePiece (piece, piece.position, true, checkIntersection);//move piece to its position
-		piece.gameObject.transform.localScale=new Vector3(1f,1f,1f);
+		piece.setSortingLayer ("Pieces");
 	}
 
-	void createPieceGameObjects(PieceClasses.Piece piece, Vector2 position, float scaleX=1, float scaleY=1, string gameObjectName="Piece"){
-		piece.gameObject = new GameObject (gameObjectName);
-		int width = piece.squares.GetLength (0), height = piece.squares.GetLength (1);
-		for (int y=0; y<height; y++)
-			for (int x=0; x<width; x++)
-				if (piece.squaresOn [x,y]){
-					GameObject prefab=prefabs[piece.squares[x,y].prefabNum];
-					Vector3 squarePosition=new Vector3(x+.5f,-y-.5f,0);//-(width/2f)+x+.5f, (height/2f)-y-.5f for centered
-					Quaternion rotation=Quaternion.Euler(0,0,piece.squares[x,y].rotation);
-					piece.squares[x,y].gameObject=(GameObject)Instantiate(prefab, squarePosition,rotation);
-					piece.squares[x,y].gameObject.transform.parent=piece.gameObject.transform;
-					piece.squares[x,y].gameObject.GetComponent<SpriteRenderer>().color=piece.color;
-					piece.squares[x,y].gameObject.GetComponent<Transform>().localScale=new Vector3(scaleX, scaleY, 1f);
+	void colorPreviewPiece(PieceClasses.Piece piece, int[]solution){
+		int i = 0;
+		for (int y = 0; y < piece.height; y++) {
+			for (int x = 0; x < piece.width; x++) {
+				if (piece.squaresOn [x, y]) {
+					piece.squares [x, y].gameObject.GetComponent<SpriteRenderer> ().color = PackPresets.colorScheme [solution [i]];
+					i++;
 				}
-		piece.gameObject.transform.position = position;
-		piece.gameObject.transform.localScale=new Vector3(1f,1f,1f);
+			}
+		}
+	}
+
+	public static Vector2 boundsScreenSize(Bounds bounds, Camera camera)
+	{
+		var origin = camera.WorldToScreenPoint(new Vector3(bounds.min.x, bounds.min.y, 0.0f));
+		var extents = camera.WorldToScreenPoint(new Vector3(bounds.max.x, bounds.max.y, 0.0f));
+
+		return new Vector2(extents.x - origin.x, extents.y - origin.y);
 	}
 
 }

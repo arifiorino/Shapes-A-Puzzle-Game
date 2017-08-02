@@ -3,35 +3,46 @@ using System.Collections;
 using UnityEngine.UI;
 
 public class Pack{
-	public int packI;
+	public int index;
+	public Color color;
 	public Level[] levels;
-	public int lastSolvedLevel;
-	public int currentLevel;
+	public Level currentLevel;
 	public string name;
 	public GameObject button;
-	public Pack(int numLevels, string name){
+	public int numSolvedLevels;
+
+	public Pack(int index, int numLevels, string name, Color color){
 		levels = new Level[numLevels];
 		this.name = name;
+		this.color = color;
+		this.index = index;
+		this.createLevels ();
 	}
-	public void makeLevels(int lastSolvedLevel){
-		this.lastSolvedLevel = lastSolvedLevel;
-		for (int i=0; i<levels.Length; i++)
-			levels [i] = new Level (i <= lastSolvedLevel+1, i <= lastSolvedLevel, i+1);
+
+	public void createLevels(){
+		numSolvedLevels = 0;
+		for (int levelI=0;levelI<levels.Length;levelI++) {
+			bool solved = PlayerPrefs.GetInt ("pack" + (this.index+1) + "Level" + (levelI+1) + "Solved", 0) == 1;
+
+			this.levels [levelI] = new Level (this.index, levelI, solved);
+			if (solved)
+				numSolvedLevels++;
+		}
 	}
+
 	public void solveLevel(){
 
-		if (currentLevel < levels.Length)
-			currentLevel++;
-		else
-			currentLevel = 0;
+		this.numSolvedLevels++;
+		this.currentLevel.solved = true;
 
-		lastSolvedLevel++;
-		makeLevels (lastSolvedLevel);
+		PlayerPrefs.SetInt ("pack" + (this.index+1) + "Level" + (this.currentLevel.index+1) + "Solved", 1);
 
-		PlayerPrefs.SetInt ("Pack" + packI + " Current Level", currentLevel);
-		PlayerPrefs.SetInt ("Pack" + packI + " Last Solved Level", lastSolvedLevel);
+		this.currentLevel = this.levels [this.currentLevel.index+1];
+		PlayerPrefs.SetInt ("pack" + this.index + "CurrentLevel", this.currentLevel.index);
+		PlayerPrefs.Save ();
 	}
+
 	public string getScore(){
-		return lastSolvedLevel+1 + "/" + levels.Length;
+		return this.numSolvedLevels + "/" + this.levels.Length;
 	}
 }
