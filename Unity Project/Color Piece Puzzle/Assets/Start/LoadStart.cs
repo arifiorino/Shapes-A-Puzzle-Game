@@ -11,31 +11,37 @@ public class LoadStart : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 
-//		PlayerPrefs.DeleteAll ();
+		PlayerPrefs.DeleteAll ();
 
 		Debug.Log ("Starting");
 
 		firstRun = PlayerPrefs.GetInt ("firstRun", 0) == 0;
 		PlayerPrefs.SetInt ("firstRun", 1);
-
 		PlayerPrefs.Save ();
+
+		MusicPlayer.setMute(PlayerPrefs.GetInt ("musicOn", 1) == 0);
+		SoundEffectPlayer.setMute(PlayerPrefs.GetInt ("soundsOn", 1) == 0);
 
 		resumeButtonBackground.SetActive (!firstRun);
 		packsButtonBackground.SetActive (!firstRun);
 		startButtonBackground.SetActive (firstRun);
 
 		startButton.GetComponent<Button>().onClick.AddListener(delegate() {
-			SceneManager.LoadScene("Level Select/PackSelect");
+			SoundEffectPlayer.playSound(SoundEffectPlayer.clickSound);
+			SceneManager.LoadScene("PacksAndLevels/PackSelect");
 		});
 
 		resumeButton.GetComponent<Button>().onClick.AddListener(delegate() {
+			SoundEffectPlayer.playSound(SoundEffectPlayer.clickSound);
 			PackPresets.currentPack=PackPresets.packs[PlayerPrefs.GetInt ("currentPack")];
 			PackPresets.currentPack.currentLevel=PackPresets.currentPack.levels[PlayerPrefs.GetInt ("pack"+PackPresets.currentPack.index+"CurrentLevel")];
 			SceneManager.LoadScene("Game/Game");
+
 		});
 
 		packsButton.GetComponent<Button>().onClick.AddListener(delegate() {
-			SceneManager.LoadScene("Level Select/PackSelect");
+			SoundEffectPlayer.playSound(SoundEffectPlayer.clickSound);
+			SceneManager.LoadScene("PacksAndLevels/PackSelect");
 		});
 
 		PackPresets.loadPacks ();

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+
 public class PieceClasses : MonoBehaviour{
 
 	public class GameBoard{
@@ -42,7 +43,7 @@ public class PieceClasses : MonoBehaviour{
 			return mySquaresOn;
 		}
 
-		public void pickUpOrDropPiece(Piece piece, bool pickUp=true){
+		public bool pickUpOrDropPiece(Piece piece, bool pickUp=true){ //returns true if piece snapped
 			piece.isOnBoard= !pickUp;
 			updateSquares();
 			foreach (Piece p in pieces) {
@@ -50,6 +51,8 @@ public class PieceClasses : MonoBehaviour{
 			}
 			if (!piece.isOnBoard)
 				piece.makeCurves ();
+			
+			return !piece.isPieceCurved ();
 		}
 
 		public Vector2 movePiece(Piece piece, Vector2 newLocation, bool moveGameObject=true, bool checkIntersection=true){ //adapts to board too
@@ -165,7 +168,24 @@ public class PieceClasses : MonoBehaviour{
 						squares[x,y].color=this.color;
 				}
 		}
-		public void adaptToBoard(GameBoard board){
+
+		public bool isPieceCurved(){
+			for (int y=0; y<height; y++)
+				for (int x=0; x<width; x++)
+					if (squaresOn[x,y]){
+						bool a0= !((x<width-1 && squaresOn[x+1,y]) || (y>0 && squaresOn[x,y-1])); //topRight
+						bool a1= !((x>0 && squaresOn[x-1,y]) || (y>0 && squaresOn[x,y-1])); //topLeft
+						bool a2= !((x>0 && squaresOn[x-1,y]) || (y<height-1 && squaresOn[x,y+1])); //bottomLeft
+						bool a3= !((x<width-1 && squaresOn[x+1,y]) || (y<height-1 && squaresOn[x,y+1])); //bottomRight
+						if (a0 != this.squares [x, y].cornersOn [0] || a1 != this.squares [x, y].cornersOn [1] ||
+							a2 != this.squares [x, y].cornersOn [2] || a3 != this.squares [x, y].cornersOn [3])
+							return false;
+					}
+			
+			return true;
+		}
+
+		public void adaptToBoard(GameBoard board){ //returns true if piece snapped
 			for (int y=(int)position.y; y<position.y+height; y++)
 				for (int x=(int)position.x; x<position.x+width; x++)
 					if (board.squaresOn[x,y] && squaresOn[x-(int)position.x,y-(int)position.y]){
@@ -173,7 +193,7 @@ public class PieceClasses : MonoBehaviour{
 						bool topLeft= !((x>0 && board.squaresOn[x-1,y]) || (y>0 && board.squaresOn[x,y-1]));
 						bool bottomRight= !((x<board.size.x-1 && board.squaresOn[x+1,y]) || (y<board.size.y-1 && board.squaresOn[x,y+1]));
 						bool bottomLeft= !((x>0 && board.squaresOn[x-1,y]) || (y<board.size.y-1 && board.squaresOn[x,y+1]));
-						squares[x-(int)position.x,y-(int)position.y].setup(new bool[]{topRight, topLeft, bottomLeft, bottomRight});
+						squares[x-(int)position.x,y-(int)position.y].setup( new bool[]{ topRight, topLeft, bottomLeft, bottomRight });
 					}
 		}
 		public bool intersects(Vector2 point){

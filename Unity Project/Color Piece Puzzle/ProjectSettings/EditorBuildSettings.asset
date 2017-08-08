@@ -9,14 +9,17 @@ EditorBuildSettings:
     path: Assets/Start/Start.unity
     guid: fc12443dd22e64047a36ab071a73a5c7
   - enabled: 1
+    path: Assets/PacksAndLevels/PackSelect.unity
+    guid: 93ac01d113aa64756a39ad7ae3a83fb4
+  - enabled: 1
+    path: Assets/PacksAndLevels/LevelSelect.unity
+    guid: 236292c5a972941778c4f8372306e98b
+  - enabled: 1
     path: Assets/Game/Game.unity
     guid: 3c274174a70e04672bdd5a4d5663dee1
   - enabled: 1
-    path: Assets/Level Select/LevelSelect.unity
-    guid: 236292c5a972941778c4f8372306e98b
-  - enabled: 1
-    path: Assets/Level Select/PackSelect.unity
-    guid: 93ac01d113aa64756a39ad7ae3a83fb4
-  - enabled: 1
+    path: Assets/Settings/Settings.unity
+    guid: 648e9968778b84ba49a24cce20ebc9c3
+  - enabled: 0
     path: Assets/Loading/Animation.unity
     guid: 1c9f1208e3ff845229d5c85159700c21

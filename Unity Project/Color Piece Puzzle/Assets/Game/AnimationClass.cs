@@ -28,6 +28,7 @@ public class Animation{
 		}else
 			totalTime=initSpeedOrTime;
 		endColor = piece.color;
+//		Debug.Log ("End color: " + endColor);
 		startColors = new Color[piece.numSquaresOn];
 		int i = 0;
 		for (int y=0; y<piece.height; y++)
@@ -36,6 +37,8 @@ public class Animation{
 				startColors[i]=piece.squares[x,y].gameObject.GetComponent<SpriteRenderer>().color;
 				i++;
 			}
+		
+//		Debug.Log ("Start color: " + piece.firstSquare().gameObject.GetComponent<SpriteRenderer>().color);
 
 	}
 
@@ -53,7 +56,6 @@ public class Animation{
 				if (piece.squaresOn[x,y]){
 					piece.squares[x,y].gameObject.GetComponent<SpriteRenderer>().color=endColor;
 				}
-
 			return false;
 		}
 
