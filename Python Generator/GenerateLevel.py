@@ -1,4 +1,4 @@
-import random,math
+import random,math,json
 
 def randomDirection():
     direction=[0,0]
@@ -173,10 +173,15 @@ def generateLevelSquares(levelWidth, levelHeight):
 
     for randomSquareI in range(numRandomSquares):
         randomSquarePos=randomSquare2D(backgroundSquares2D)#,True
-        backgroundSquares2D[randomSquarePos[1]][randomSquarePos[0]]=random.randint(0,numPieces-1)
+
+
+        boardString=json.dumps(backgroundSquares2D)
+
+        if boardString.count(str(backgroundSquares2D[randomSquarePos[1]][randomSquarePos[0]]))!=1: #If it's not the last one left
+            backgroundSquares2D[randomSquarePos[1]][randomSquarePos[0]]=random.randint(0,numPieces-1)
         print("Random Square at:",randomSquarePos[0],",",randomSquarePos[1])
 
     output2DArray(backgroundSquares2D)
     return backgroundSquares2D
 
-generateLevelSquares(6,8)
+# generateLevelSquares(6,8)

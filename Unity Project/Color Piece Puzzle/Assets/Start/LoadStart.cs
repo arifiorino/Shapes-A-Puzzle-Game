@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class LoadStart : MonoBehaviour {
 	public Button startButton, resumeButton, packsButton;
 	public GameObject startButtonBackground, resumeButtonBackground, packsButtonBackground;
-	public static bool firstRun;
+	public static bool firstRun, haveSolvedALevel;
 
 	// Use this for initialization
 	void Start () {
@@ -18,6 +18,8 @@ public class LoadStart : MonoBehaviour {
 		firstRun = PlayerPrefs.GetInt ("firstRun", 0) == 0;
 		PlayerPrefs.SetInt ("firstRun", 1);
 		PlayerPrefs.Save ();
+
+		haveSolvedALevel = PlayerPrefs.GetInt ("haveSolvedALevel", 0) == 1;
 
 		MusicPlayer.setMute(PlayerPrefs.GetInt ("musicOn", 1) == 0);
 		SoundEffectPlayer.setMute(PlayerPrefs.GetInt ("soundsOn", 1) == 0);

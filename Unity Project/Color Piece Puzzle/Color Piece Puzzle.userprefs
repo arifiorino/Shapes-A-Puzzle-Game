@@ -2,14 +2,15 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Game/MainGame.cs">
     <Files>
-      <File FileName="Assets/Game/MainGame.cs" Line="34" Column="78" />
-      <File FileName="Assets/Start/LoadStart.cs" Line="22" Column="63" />
-      <File FileName="Assets/Sounds/SoundEffectPlayer.cs" Line="40" Column="3" />
-      <File FileName="Assets/Sounds/MusicPlayer.cs" Line="32" Column="64" />
-      <File FileName="Assets/Settings/LoadSettings.cs" Line="28" Column="31" />
-      <File FileName="Assets/ChangeScene.cs" Line="11" Column="3" />
-      <File FileName="Assets/PacksAndLevels/LoadPackSelect.cs" Line="34" Column="35" />
-      <File FileName="Assets/PacksAndLevels/LoadLevelSelect.cs" Line="1" Column="1" />
+      <File FileName="Assets/Start/LoadStart.cs" Line="22" Column="70" />
+      <File FileName="Assets/PacksAndLevels/PackPresets.cs" Line="16" Column="16" />
+      <File FileName="Assets/Game/MainGame.cs" Line="98" Column="4" />
+      <File FileName="Assets/PacksAndLevels/LoadLevelSelect.cs" Line="99" Column="64" />
+      <File FileName="Assets/Game/MoveClass.cs" Line="1" Column="1" />
+      <File FileName="Assets/Game/PieceClasses.cs" Line="1" Column="1" />
+      <File FileName="Assets/Game/AnimationClass.cs" Line="1" Column="1" />
+      <File FileName="Assets/Resources/Pack1Level1.txt" Line="1" Column="1" />
+      <File FileName="Assets/PacksAndLevels/LoadPackSelect.cs" Line="25" Column="21" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

@@ -22,7 +22,7 @@ public class LoadPackSelect : MonoBehaviour {
 			pack.button.GetComponentsInChildren<Text>()[1].text=pack.getScore();
 
 			ColorBlock cb = pack.button.GetComponent<Button>().colors;
-			cb.normalColor = PackPresets.colorScheme[packI%PackPresets.colorScheme.Length];
+			cb.normalColor = pack.color;
 			cb.highlightedColor=cb.normalColor;
 			pack.button.GetComponent<Button>().colors = cb;
 

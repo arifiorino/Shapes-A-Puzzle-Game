@@ -110,10 +110,13 @@ public class PieceClasses : MonoBehaviour{
 			int i = 0;
 			foreach (PieceClasses.Piece piece in pieces){
 				piece.setSortingLayer(sortingLayer);
-				for (int y=0;y<piece.height;y++)
-					for (int x=0;x<piece.width;x++)
-						if (piece.squaresOn[x,y])
-							piece.squares[x,y].gameObject.GetComponent<SpriteRenderer>().sortingOrder=i;
+				for (int y = 0; y < piece.height; y++)
+					for (int x = 0; x < piece.width; x++)
+						if (piece.squaresOn [x, y]) {
+							piece.squares [x, y].gameObject.GetComponent<SpriteRenderer> ().sortingOrder = i;
+							if (piece.isAnimating && piece.animation.endPosition!=piece.animation.startPosition) //The ones moving should be ontop
+								piece.squares [x, y].gameObject.GetComponent<SpriteRenderer> ().sortingOrder += 100;
+						}
 						
 				i++;
 			}

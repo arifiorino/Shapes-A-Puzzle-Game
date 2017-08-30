@@ -44,14 +44,17 @@ TagManager:
   - 
   - 
   m_SortingLayers:
-  - name: Default
-    uniqueID: 0
-    locked: 0
   - name: Background Piece
     uniqueID: 3905609301
     locked: 0
+  - name: Old Pieces
+    uniqueID: 2453675883
+    locked: 0
   - name: Pieces
     uniqueID: 2895496827
+    locked: 0
+  - name: Default
+    uniqueID: 0
     locked: 0
   - name: Held Piece
     uniqueID: 3258965933

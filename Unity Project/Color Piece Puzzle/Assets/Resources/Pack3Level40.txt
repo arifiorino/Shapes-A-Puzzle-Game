@@ -1,0 +1,58 @@
+{
+    "backgroundPiece": {
+        "color": 10,
+        "size": [6,7],
+        "squaresOn": [0,1,1,0,0,0,1,1,1,1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,0,0,0,1,1,1,0]},
+    "boardSize": [10,19],
+    "pieces": [
+        {
+            "color": 2,
+            "size": [4,5],
+            "squaresOn": [1,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,1,1],
+            "startPos": [1,0]},
+        {
+            "color": 4,
+            "size": [4,2],
+            "squaresOn": [1,0,0,0,0,0,1,1],
+            "startPos": [2,16]},
+        {
+            "color": 7,
+            "size": [4,2],
+            "squaresOn": [0,0,0,1,1,1,0,0],
+            "startPos": [6,3]},
+        {
+            "color": 3,
+            "size": [2,2],
+            "squaresOn": [1,1,1,1],
+            "startPos": [5,1]},
+        {
+            "color": 9,
+            "size": [2,2],
+            "squaresOn": [1,1,1,1],
+            "startPos": [0,5]},
+        {
+            "color": 8,
+            "size": [2,2],
+            "squaresOn": [0,1,1,1],
+            "startPos": [1,12]},
+        {
+            "color": 5,
+            "size": [2,2],
+            "squaresOn": [1,1,0,1],
+            "startPos": [7,15]},
+        {
+            "color": 6,
+            "size": [2,2],
+            "squaresOn": [0,1,1,1],
+            "startPos": [6,17]},
+        {
+            "color": 0,
+            "size": [2,1],
+            "squaresOn": [1,1],
+            "startPos": [2,18]},
+        {
+            "color": 1,
+            "size": [1,1],
+            "squaresOn": [1],
+            "startPos": [7,6]}]
+}

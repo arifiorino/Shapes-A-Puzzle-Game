@@ -13,7 +13,6 @@ public class MoveClass : MonoBehaviour {
 			this.piece=piece;
 			this.startPosition=startPosition;
 			this.endPosition=endPosition;
-			Debug.Log("New move from: "+startPosition+" to "+endPosition);
 		}
 	}
 }

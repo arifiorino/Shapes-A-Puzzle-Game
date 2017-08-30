@@ -72,17 +72,19 @@ public class MainGame : MonoBehaviour
 		});
 
 		undoButton.GetComponent<Button> ().onClick.AddListener (delegate() {
-			MoveClass.Move move = moves[moves.Count-1];
-			Debug.Log("Start: "+move.startPosition);
-			Vector2 endPos=mainBoard.movePiece(move.piece, move.startPosition, false);
-			animate (move.piece, endPos, 20f);
-			bool pieceSnapped = mainBoard.pickUpOrDropPiece (move.piece, false);
-			if (pieceSnapped) {
-				SoundEffectPlayer.playSound (SoundEffectPlayer.snapSound);
+			if (!animating){
+				MoveClass.Move move = moves[moves.Count-1];
+				Debug.Log("Start: "+move.startPosition);
+				Vector2 endPos=mainBoard.movePiece(move.piece, move.startPosition, false);
+				animate (move.piece, endPos, 60f);
+				bool pieceSnapped = mainBoard.pickUpOrDropPiece (move.piece, false);
+				if (pieceSnapped) {
+					SoundEffectPlayer.playSound (SoundEffectPlayer.snapSound);
+				}
+				updateAllGameObjects (mainBoard);
+				moves.RemoveAt(moves.Count-1);
+				setMenuButtonsDisabled();
 			}
-			updateAllGameObjects (mainBoard);
-			moves.RemoveAt(moves.Count-1);
-			setMenuButtonsDisabled();
 		});
 
 		moves = new List<MoveClass.Move> ();
@@ -91,7 +93,7 @@ public class MainGame : MonoBehaviour
 		setMenuButtonsDisabled ();
 		mainBoard = importPiecesFromGameDict (PackPresets.currentPack.currentLevel.gameDict);
 
-		if (LoadStart.firstRun) {
+		if (!LoadStart.haveSolvedALevel) {
 			tutorialText.SetActive (true);
 		}
 
@@ -114,16 +116,26 @@ public class MainGame : MonoBehaviour
 	{
 
 		mainScheduler.addUpdateFunction (updateGame);
-		mainScheduler.addTime (1f);
-//		mainScheduler.addInitFunctionWithTime (showRandomCompliment, .5f);
+
 
 		mainScheduler.addInitFunction (delegate() {
-			tutorialText.SetActive (false);
+			//ScreenCapture.CaptureScreenshot("pack" + PackPresets.currentPack.index + "Level"+ PackPresets.currentPack.currentLevel.index+".png", 4);
+			if (!LoadStart.haveSolvedALevel){
+				LoadStart.haveSolvedALevel=true;
+				PlayerPrefs.SetInt ("haveSolvedALevel", 1);
+				PlayerPrefs.Save ();
+			}
 			this.heldPieceIndex = -1;
 			this.saveLevelSolution ();
 			PackPresets.currentPack.solveLevel ();
 			animating = false;
 			moves.Clear();
+		});
+
+		mainScheduler.addTime (1f);
+
+		mainScheduler.addInitFunction (delegate() {
+			tutorialText.SetActive (false);
 		});
 
 		mainScheduler.addInitFunction (setupTransition); //also imports new board
@@ -306,7 +318,7 @@ public class MainGame : MonoBehaviour
 				squaresOn [x, y] = pieceDict ["squaresOn"] [i].AsInt == 1;
 				i++;
 			}
-		Color color = new Color (pieceDict ["color"] [0].AsFloat / 255f, pieceDict ["color"] [1].AsFloat / 255f, pieceDict ["color"] [2].AsFloat / 255f);
+		Color color = PackPresets.colorScheme[pieceDict ["color"].AsInt];
 		return new PieceClasses.Piece (squaresOn, color, new Vector2 (pieceDict ["startPos"] [0].AsFloat, pieceDict ["startPos"] [1].AsFloat));
 	}
 

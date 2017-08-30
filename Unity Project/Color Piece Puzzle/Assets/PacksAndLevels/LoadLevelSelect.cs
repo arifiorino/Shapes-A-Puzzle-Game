@@ -96,7 +96,7 @@ public class LoadLevelSelect : MonoBehaviour {
 				squaresOn[x,y]=pieceDict["squaresOn"][i].AsInt==1;
 				i++;
 			}
-		Color color=new Color(pieceDict["color"][0].AsFloat/255f,pieceDict["color"][1].AsFloat/255f,pieceDict["color"][2].AsFloat/255f);
+		Color color=PackPresets.colorScheme[pieceDict["color"].AsInt];
 		return new PieceClasses.Piece (squaresOn, color, new Vector2(pieceDict["startPos"][0].AsFloat, pieceDict["startPos"][1].AsFloat));
 	}
 
@@ -115,7 +115,7 @@ public class LoadLevelSelect : MonoBehaviour {
 					piece.squares[x,y].gameObject.GetComponent<SpriteRenderer>().color=piece.color;
 					piece.squares[x,y].gameObject.GetComponent<Transform>().localScale=new Vector3(1f, 1f, 1f);
 				}
-		piece.setSortingLayer ("Pieces");
+		piece.setSortingLayer ("Held Piece");
 	}
 
 	void colorPreviewPiece(PieceClasses.Piece piece, int[]solution){

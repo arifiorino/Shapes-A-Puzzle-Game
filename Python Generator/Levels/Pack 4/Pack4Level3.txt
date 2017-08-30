@@ -1,0 +1,23 @@
+{
+    "backgroundPiece": {
+        "color": 10,
+        "size": [3,4],
+        "squaresOn": [1,1,0,0,1,1,1,1,1,0,1,0]},
+    "boardSize": [7,12],
+    "pieces": [
+        {
+            "color": 4,
+            "size": [3,2],
+            "squaresOn": [1,1,0,0,1,1],
+            "startPos": [3,2]},
+        {
+            "color": 9,
+            "size": [2,2],
+            "squaresOn": [1,1,0,1],
+            "startPos": [1,10]},
+        {
+            "color": 5,
+            "size": [1,1],
+            "squaresOn": [1],
+            "startPos": [5,11]}]
+}
