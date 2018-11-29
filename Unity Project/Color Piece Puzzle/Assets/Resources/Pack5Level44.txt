@@ -2,57 +2,57 @@
     "backgroundPiece": {
         "color": 10,
         "size": [6,6],
-        "squaresOn": [0,0,1,1,1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1]},
+        "squaresOn": [1,1,1,1,1,0,1,1,1,1,1,0,1,1,0,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,0]},
     "boardSize": [10,18],
     "pieces": [
         {
-            "color": 9,
-            "size": [6,3],
-            "squaresOn": [1,1,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1],
-            "startPos": [1,0]},
-        {
-            "color": 2,
-            "size": [3,6],
-            "squaresOn": [0,0,1,0,0,0,0,0,0,0,0,0,1,1,0,0,1,0],
-            "startPos": [6,12]},
-        {
-            "color": 1,
-            "size": [3,4],
-            "squaresOn": [0,0,1,0,0,0,0,0,0,1,1,0],
+            "color": 5,
+            "size": [4,6],
+            "squaresOn": [1,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
             "startPos": [6,1]},
         {
-            "color": 0,
-            "size": [2,5],
-            "squaresOn": [1,0,1,1,0,0,0,0,0,1],
-            "startPos": [0,11]},
-        {
-            "color": 8,
-            "size": [2,3],
-            "squaresOn": [1,0,1,1,0,1],
-            "startPos": [4,13]},
-        {
-            "color": 5,
-            "size": [3,2],
-            "squaresOn": [1,1,0,0,0,1],
-            "startPos": [3,2]},
-        {
-            "color": 7,
-            "size": [3,2],
-            "squaresOn": [0,0,1,1,1,0],
-            "startPos": [0,4]},
-        {
-            "color": 4,
-            "size": [2,2],
-            "squaresOn": [0,1,1,1],
-            "startPos": [8,5]},
+            "color": 2,
+            "size": [4,2],
+            "squaresOn": [0,1,0,0,1,1,0,1],
+            "startPos": [0,12]},
         {
             "color": 6,
-            "size": [1,1],
-            "squaresOn": [1],
-            "startPos": [3,17]},
+            "size": [2,3],
+            "squaresOn": [0,1,0,0,1,0],
+            "startPos": [6,12]},
+        {
+            "color": 7,
+            "size": [2,3],
+            "squaresOn": [0,1,0,1,1,1],
+            "startPos": [4,15]},
+        {
+            "color": 1,
+            "size": [3,2],
+            "squaresOn": [0,0,1,1,1,1],
+            "startPos": [7,3]},
+        {
+            "color": 9,
+            "size": [2,2],
+            "squaresOn": [1,1,1,1],
+            "startPos": [3,1]},
         {
             "color": 3,
+            "size": [2,2],
+            "squaresOn": [0,1,1,1],
+            "startPos": [7,16]},
+        {
+            "color": 4,
+            "size": [2,1],
+            "squaresOn": [1,1],
+            "startPos": [0,1]},
+        {
+            "color": 0,
+            "size": [2,1],
+            "squaresOn": [1,1],
+            "startPos": [7,0]},
+        {
+            "color": 8,
             "size": [1,1],
             "squaresOn": [1],
-            "startPos": [1,17]}]
+            "startPos": [2,15]}]
 }

@@ -11,7 +11,7 @@ public class LoadStart : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 
-		PlayerPrefs.DeleteAll ();
+//		PlayerPrefs.DeleteAll ();
 
 		Debug.Log ("Starting");
 
@@ -48,10 +48,8 @@ public class LoadStart : MonoBehaviour {
 
 		PackPresets.loadPacks ();
 
+
+
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+
 }

@@ -1,23 +1,23 @@
 {
     "backgroundPiece": {
         "color": 10,
-        "size": [3,4],
-        "squaresOn": [0,0,1,0,1,1,0,1,1,1,1,1]},
-    "boardSize": [7,12],
+        "size": [3,3],
+        "squaresOn": [1,1,1,1,1,1,0,1,1]},
+    "boardSize": [7,11],
     "pieces": [
         {
-            "color": 0,
-            "size": [2,4],
-            "squaresOn": [0,1,0,1,0,0,1,0],
-            "startPos": [4,8]},
-        {
-            "color": 9,
-            "size": [3,2],
-            "squaresOn": [0,0,1,1,0,1],
-            "startPos": [1,1]},
+            "color": 6,
+            "size": [2,2],
+            "squaresOn": [0,1,1,1],
+            "startPos": [5,2]},
         {
             "color": 4,
-            "size": [1,2],
+            "size": [2,2],
+            "squaresOn": [1,0,1,1],
+            "startPos": [1,1]},
+        {
+            "color": 0,
+            "size": [2,1],
             "squaresOn": [1,1],
-            "startPos": [6,1]}]
+            "startPos": [4,1]}]
 }

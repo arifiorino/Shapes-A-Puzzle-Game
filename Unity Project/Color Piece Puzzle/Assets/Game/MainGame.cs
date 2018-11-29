@@ -32,6 +32,7 @@ public class MainGame : MonoBehaviour
 	Scheduler mainScheduler;
 	List<MoveClass.Move> moves;
 
+
 	void Start (){
 		gameMusicPlayer.GetComponent<AudioSource> ().mute = MusicPlayer.getMute ();
 
@@ -119,7 +120,13 @@ public class MainGame : MonoBehaviour
 
 
 		mainScheduler.addInitFunction (delegate() {
-			//ScreenCapture.CaptureScreenshot("pack" + PackPresets.currentPack.index + "Level"+ PackPresets.currentPack.currentLevel.index+".png", 4);
+			backButton.GetComponent<Button> ().interactable=false;
+			nextLevelButton.GetComponent<Button> ().interactable=false;
+			lastLevelButton.GetComponent<Button> ().interactable=false;
+			undoButton.GetComponent<Button> ().interactable=false;
+			settingsButton.GetComponent<Button> ().interactable=false;
+
+//			ScreenCapture.CaptureScreenshot("pack" + PackPresets.currentPack.index + "Level"+ PackPresets.currentPack.currentLevel.index+".png", 4);
 			if (!LoadStart.haveSolvedALevel){
 				LoadStart.haveSolvedALevel=true;
 				PlayerPrefs.SetInt ("haveSolvedALevel", 1);
@@ -146,6 +153,10 @@ public class MainGame : MonoBehaviour
 			setMenuButtonsDisabled();
 			Destroy (oldBoard.gameObject);
 			mainBoard.backgroundPiece.gameObject.SetActive (true);
+
+			backButton.GetComponent<Button> ().interactable=true;
+			settingsButton.GetComponent<Button> ().interactable=true;
+			setMenuButtonsDisabled();
 		});
 
 		mainScheduler.addInitFunction (mainLevelLoop);

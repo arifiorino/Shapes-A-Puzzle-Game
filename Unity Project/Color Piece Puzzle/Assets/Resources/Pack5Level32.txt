@@ -1,48 +1,48 @@
 {
     "backgroundPiece": {
         "color": 10,
-        "size": [5,6],
-        "squaresOn": [0,1,1,1,1,0,0,1,1,0,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,0]},
-    "boardSize": [9,16],
+        "size": [6,5],
+        "squaresOn": [0,0,0,1,1,1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1]},
+    "boardSize": [10,17],
     "pieces": [
         {
-            "color": 9,
-            "size": [2,4],
-            "squaresOn": [0,1,0,1,0,1,1,0],
-            "startPos": [5,11]},
-        {
-            "color": 2,
-            "size": [2,3],
-            "squaresOn": [0,1,1,1,0,1],
-            "startPos": [1,12]},
-        {
-            "color": 7,
-            "size": [2,3],
-            "squaresOn": [1,0,1,1,0,1],
-            "startPos": [4,1]},
-        {
-            "color": 1,
-            "size": [4,1],
-            "squaresOn": [1,1,1,1],
-            "startPos": [5,0]},
-        {
             "color": 6,
-            "size": [3,1],
-            "squaresOn": [1,0,1],
-            "startPos": [1,0]},
+            "size": [3,4],
+            "squaresOn": [0,1,1,0,0,0,0,0,0,1,0,0],
+            "startPos": [0,11]},
         {
             "color": 8,
-            "size": [1,3],
-            "squaresOn": [1,1,1],
-            "startPos": [7,2]},
+            "size": [5,2],
+            "squaresOn": [1,0,1,0,0,1,0,0,0,1],
+            "startPos": [2,15]},
+        {
+            "color": 1,
+            "size": [2,4],
+            "squaresOn": [0,1,1,1,0,1,0,1],
+            "startPos": [4,0]},
+        {
+            "color": 9,
+            "size": [3,2],
+            "squaresOn": [1,0,0,1,0,1],
+            "startPos": [7,0]},
+        {
+            "color": 5,
+            "size": [4,1],
+            "squaresOn": [1,1,1,1],
+            "startPos": [1,4]},
         {
             "color": 4,
-            "size": [1,1],
-            "squaresOn": [1],
-            "startPos": [1,5]},
+            "size": [1,2],
+            "squaresOn": [1,1],
+            "startPos": [9,12]},
         {
             "color": 0,
             "size": [1,1],
             "squaresOn": [1],
-            "startPos": [2,1]}]
+            "startPos": [0,1]},
+        {
+            "color": 2,
+            "size": [1,1],
+            "squaresOn": [1],
+            "startPos": [5,14]}]
 }

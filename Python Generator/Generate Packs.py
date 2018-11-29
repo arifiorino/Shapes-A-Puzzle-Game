@@ -10,7 +10,7 @@ pack1Palette=[[0,1,2,5],[3,4],[6,7,8,9]]
 pack2Palette=[[1,4,5,2],[3,8],[0,6,7,9]]
 pack3Palette=[[0,3,9],[2,5,8],[1,4,6,7]]
 pack4Palette=[[4,5,9],[3,1,0],[2,6,7,8]]
-pack5Palette=[[4,6,9,0],[8,2],[5,1,3,7]]
+pack5Palette=[[4,6,0],[9,8,2],[5,1,3,7]]
 
 allPalettes=[pack1Palette,pack2Palette,pack3Palette,pack4Palette,pack5Palette]
 
@@ -179,7 +179,7 @@ def makeDictPretty(d):
     r=r[0:m.start()]+r[m.end()-1:]
   return r
 
-for packI in range(1,6):
+for packI in range(5,6):
     for levelI in range(1,51):
         print("\n\nLevel:"+str(levelI))
         file=open("Levels/Pack "+str(packI)+"/Pack"+str(packI)+"Level"+str(levelI)+".txt",'w')
